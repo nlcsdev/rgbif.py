@@ -1,25 +1,30 @@
 
 from pgmagick import Image, ImageList, Geometry, Color,CompositeOperator, Blob
 import math
-import sys
 from os import path
 import requests
+import arg_handler
 
-arg_len = len(sys.argv)
+my_arg_handler = arg_handler.rgbif_args()
 
-base_gif_path = r"\Desktop\input.gif"
-if arg_len >= 2:
-    base_gif_path = sys.argv[1].encode('unicode-escape')
+#arg_len = len(sys.argv)
+
+input_gif_path = my_arg_handler.input_path
+# input_gif_path = r"\Desktop\input.gif"
+# if arg_len >= 2:
+#     input_gif_path = sys.argv[1].encode('unicode-escape')
 #print(base_gif_path)
 
-output_gif_path = r"\Desktop\output.gif"
-if arg_len >= 3:
-    output_gif_path = sys.argv[2].encode('unicode-escape')
+output_gif_path = my_arg_handler.output_path
+# output_gif_path = r"\Desktop\output.gif"
+# if arg_len >= 3:
+#     output_gif_path = sys.argv[2].encode('unicode-escape')
 #print(output_gif_path)
 
-operator = "default"
-if arg_len >= 4:
-    operator = sys.argv[3].encode('ascii').decode('utf-8')
+operator = my_arg_handler.operator
+# operator = "default"
+# if arg_len >= 4:
+#     operator = sys.argv[3].encode('ascii').decode('utf-8')
 
 def isLocal(uri):
     if path.isfile(uri):
@@ -36,13 +41,13 @@ filterlist = ImageList()
 imgs = ImageList()
 single_gif = Image()
 
-if not isLocal(base_gif_path):
-    scraped_data = scrape(base_gif_path)
+if not isLocal(input_gif_path):
+    scraped_data = scrape(input_gif_path)
     single_gif = Image(scraped_data)
     imgs.readImages(scraped_data)
 else:
-    single_gif = Image(base_gif_path)
-    imgs.readImages(base_gif_path)
+    single_gif = Image(input_gif_path)
+    imgs.readImages(input_gif_path)
 
 total_frames = len(imgs)
 
@@ -80,6 +85,6 @@ if operator == "default":
     filterlist.writeImages(r"\Desktop\output_hue.gif")
 else:
     applyRGB(operator)
-    filterlist.writeImages(f"\\Desktop\\output_{operator}.gif")
+    filterlist.writeImages(output_gif_path)
 
 #https://cdn.discordapp.com/emojis/726328204373000272.gif?v=1

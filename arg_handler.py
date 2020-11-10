@@ -3,23 +3,27 @@ import sys
 
 parse = argparse.ArgumentParser()
 parse.add_argument("-o",default="default")
-#parse.add_argument("-color","-hue","-overlay","-diff","-dissolve")
-parse.add_argument("-out",nargs= 1,default=["\\Desktop\\output.gif"])
-parse.add_argument("-input",nargs=1,default=[r"\Desktop\input.gif"])
+parse.add_argument("-emoji",nargs='?',const=True,default=False)
+parse.add_argument("-i",type=float,default=1.0)
+parse.add_argument("-minframes",type=int,default=24)
+parse.add_argument("-output",default="\\Desktop\\output_{0}.gif")
+parse.add_argument("-input",default=r"\Desktop\input.gif")
 
 class rgbif_args():
     global parse
     input_path = r"\Desktop\input.gif"
     operator = "default"
     output_path = "\\Desktop\\output_{0}.gif"
+    emoji = False
+    intensity = 1.0
+    minimum_frames = 24
     
     def __init__(self):
         args = parse.parse_args()
-        #print(args)
-        self.input_path = args.input[0]
-        #print(self.input_path)
         self.operator = args.o
-        #print(self.operator)
-        self.output_path = args.out[0].format(self.operator)
-        #print(self.output_path)
+        self.emoji = args.emoji
+        self.intensity = args.i
+        self.minimum_frames = args.minframes
+        self.input_path = args.input
+        self.output_path = args.output.format(self.operator)
         

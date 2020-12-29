@@ -91,15 +91,31 @@ if __name__ == "__main__":
     emoji_gui_toggle.grid(row=3,column=5,sticky=W,padx=5,pady=5)
     #
 
+    #result
+    result_var = StringVar()
+    result_var.set('Awaiting Task')
+    result_label = Label(root,textvariable=result_var)
+    result_label.grid(row=5,column=0,columnspan=1, sticky=W,padx=5, pady=5)
+    #
+
+    #convert event that includes task result, whether there was an error or the task succeeded.
+    def convert_event():
+        try:
+            creatRGBIF(
+                uri=input_gif_path_gui_dir_field.get(),
+                operation=operator_var.get(),
+                min_frames=int(minimum_frames_gui_input_field.get()),
+                intensity=float(intensity_gui_input_field.get()),
+                emoji=emoji_var.get(),
+                output_path=output_gif_path_gui_dir_field.get()
+            )
+            result_var.set('Success!')
+        except Exception as error:
+            result_var.set('Error: ' + str(error))
+
     #covert button
-    convert_btn = Button(root,text="Convert", command=lambda:creatRGBIF(
-        uri=input_gif_path_gui_dir_field.get(),
-        operation=operator_var.get(),
-        min_frames=int(minimum_frames_gui_input_field.get()),
-        intensity=float(intensity_gui_input_field.get()),
-        emoji=emoji_var.get(),
-        output_path=output_gif_path_gui_dir_field.get()
-        ))
+    convert_btn = Button(root,text="Convert", command=lambda: convert_event())
     convert_btn.grid(row=4, column=0,columnspan=1, sticky=W,padx=5, pady=5)
+    #
 
     root.mainloop()

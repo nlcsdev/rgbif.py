@@ -11,4 +11,5 @@ Features:
 - Status bar to show any errors that occur.
 
 Tech Stack:
+
 Python, Pgmagick, Tkinter
